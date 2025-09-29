@@ -27,12 +27,12 @@
 - `markMatched()`：標記為已配對
 - `reset()`：重置
 
-### `MemoryGame` 狀態與行為
+### `MemoryGame` 型別與成員
 | 成員              | 型別           | 說明                                  |
 |-------------------|----------------|---------------------------------------|
 | `cards`           | `List<Card>`   | 全部卡片清單                          |
 | `timeLimitSec`    | `int`          | 時間限制（秒）                        |
-| `firstPickIndex`  | `int?`         | 第一張選擇的索引                      |
+| `firstPickIndex`  | `int`         | 第一張選擇的索引                      |
 | `moves`           | `int`          | 移動次數/翻牌次數                     |
 | `matchedPairs`    | `int`          | 已配對成功的組數                      |
 | `isGameOver`      | `bool`         | 是否結束（時間到或全配對）            |
@@ -46,43 +46,40 @@
 
 ---
 
-### Mermaid 類別圖（GitHub 支援）
+###  類別圖
 ```mermaid
 classDiagram
-    direction LR
-
     class MemoryGameConsole {
-      +static void main(String[] args)
-      -static void printCards(List~Card~)
+        +main(String[] args)
+        +printCards(List<Card> cards)
     }
-
-    class MemoryGame {
-      -List~Card~ cards
-      -Card previousCard
-      -long startTime
-      -int timeLimitSeconds
-      -int pairsFound
-      +MemoryGame(int numPairs, int timeLimitSeconds)
-      +List~Card~ getCards()
-      +void startGame()
-      +boolean isTimeUp()
-      +boolean isGameOver()
-      +boolean flipCard(int index)
-      -List~Card~ createCards(int numPairs)
-    }
-
+    
     class Card {
-      -int id
-      -boolean isFaceUp
-      +Card(int id)
-      +int getId()
-      +boolean isFaceUp()
-      +void flip()
+        -int id
+        -boolean isFaceUp
+        +Card(int id)
+        +getId() : int
+        +isFaceUp() : boolean
+        +flip()
+    }
+    
+    class MemoryGame {
+        -List<Card> cards
+        -Card previousCard
+        -long startTime
+        -int timeLimitSeconds
+        -int pairsFound
+        +MemoryGame(int numPairs, int timeLimitSeconds)
+        +getCards() : List<Card>
+        +startGame()
+        +isTimeUp() : boolean
+        +isGameOver() : boolean
+        +flipCard(int index) : boolean
     }
 
-    MemoryGameConsole ..> MemoryGame : 使用
-    MemoryGameConsole ..> Card : 列印
-    MemoryGame "1" o-- "n" Card : 管理
+    MemoryGameConsole --|> MemoryGame : creates
+    MemoryGame --|> Card : uses
+```
 
 
 
